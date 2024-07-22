@@ -32,7 +32,7 @@ tgt_case="ts"
     --stage 5 \
     --stop_stage 5 \
     --skip_stages "8 9 10 11" \
-    --kmeans_opts "--batch_bins 4800000 --portion 0.1 --storage_save_mode true" \
+    --kmeans_opts "--batch_bins 4800000 --portion 0.5 --storage_save_mode true" \
     --kmeans_feature "${kmeans_feature}" \
     --nclusters "${nclusters}" \
     --ngpu 1 \
@@ -55,4 +55,4 @@ tgt_case="ts"
     --lm_train_text "data/${train_set}/text.${tgt_case}.${tgt_lang}" \
     --num_splits_asr 8 \
     --nj 2 \
-    --hf_ckpt "TencentGameMate/chinese-hubert-base"
+    --hf_ckpt "TencentGameMate/chinese-hubert-large"

@@ -34,6 +34,7 @@ def format_feature_conf_str(feature_conf: str):
     # Replacing = with :
     feature_conf = re.sub(r"=", ": ", feature_conf)
     try:
+        feature_conf = '{"type": "s3prl","conf": {"s3prl_conf": {"upstream": "hf_hubert_custom","path_or_url": "TencentGameMate/chinese-hubert-large"},"download_dir": "ckpt","multilayer_feature": "False","layer": "21"}}'
         feature_conf = json.loads(feature_conf)
     except Exception as e:
         logger.warning(f"Failure in parsing feature_conf {feature_conf}")

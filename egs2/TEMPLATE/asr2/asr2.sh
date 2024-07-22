@@ -65,6 +65,7 @@ nclusters=2000              # The number of clusters for discrete tokenss
 storage_save_mode=true      # Save storage on SSL feature extraction
                             # If true, feature extraction and kmeans clustering on the fly
 gpu_kmeans=true             # Whether to use gpu for kmeans.
+hf_ckpt=
 
 # Tokenization related
 oov="<unk>"         # Out of vocabulary symbol.
@@ -442,7 +443,7 @@ else
     kmeans_feature_type=$(echo "${kmeans_feature}" | cut -d/ -f1)
     layer=$(echo "${kmeans_feature}" | cut -d/ -f2)
     # TODO(simpleoier): to support features beyond s3prl
-    s3prl_conf="{upstream=${kmeans_feature_type}}"
+    s3prl_conf="{upstream=${kmeans_feature_type}, path_or_url=${hf_ckpt}}"
     kmeans_feature_conf="{type=s3prl,conf={s3prl_conf=${s3prl_conf},download_dir=ckpt,multilayer_feature=False,layer=${layer}}}"
 fi
 km_dir="${expdir}"/kmeans/$(echo "${kmeans_feature}" | tr "/" "_")_${nclusters}clusters
@@ -660,6 +661,7 @@ if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ] && ! [[ " ${skip_stages} " =~ [
                 _suf=""
             fi
 
+            ./utils/fix_data_dir.sh data/train
             utils/copy_data_dir.sh --validate_opts --non-print data/"${dset}" "${data_audio}${_suf}/${dset}"
             rm -f "${data_audio}${_suf}/${dset}"/{segments,wav.scp,reco2file_and_channel,reco2dur}
 
@@ -724,10 +726,10 @@ if [ ${stage} -le 4 ] && [ ${stop_stage} -ge 4 ] && ! [[ " ${skip_stages} " =~ [
 
         # Remove empty text
         # shellcheck disable=SC2068
-        for ref_txt in ${ref_text_files[@]}; do
-            <"${data_audio}/org/${dset}/${ref_txt}" \
-                awk ' { if( NF != 1 ) print $0; } ' >"${data_audio}/${dset}/${ref_txt}"
-        done
+        # for ref_txt in ${ref_text_files[@]}; do
+        #     <"${data_audio}/org/${dset}/${ref_txt}" \
+        #         awk ' { if( NF != 1 ) print $0; } ' >"${data_audio}/${dset}/${ref_txt}"
+        # done
 
         # fix_data_dir.sh leaves only utts which exist in all files
         utils/fix_data_dir.sh \

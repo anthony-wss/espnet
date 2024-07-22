@@ -78,6 +78,11 @@ layer=${layer}\
 sample_rate=16000,hubert_url=${hubert_url},\
 hubert_dir_path=${hubert_dir_path},layer=${layer}\
 }"
+    elif [ ${feature_type} = "hf_hubert_custom" ]; then
+        feature_conf+=",conf={\
+sample_rate=16000,path_or_url=${hubert_url},\
+,layer=${layer}\
+}"
     elif [ ${feature_type} != "mfcc" ]; then
         log "Error: unsupported feature type ${feature_type}" && exit 2
     fi
