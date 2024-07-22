@@ -60,8 +60,8 @@ subset_data_dir () {
   # wav.scp text segments utt2dur
   filter_by_id $utt_list $src_dir/utt2dur $dest_dir/utt2dur ||\
     (echo "$0: subset_data_dir() error: $src_dir/utt2dur" && exit 1) || exit 1;
-  filter_by_id $utt_list $src_dir/text $dest_dir/text ||\
-    (echo "$0: subset_data_dir() error: $src_dir/text" && exit 1) || exit 1;
+  # filter_by_id $utt_list $src_dir/text $dest_dir/text ||\
+  #   (echo "$0: subset_data_dir() error: $src_dir/text" && exit 1) || exit 1;
   filter_by_id $utt_list $src_dir/segments $dest_dir/segments ||\
     (echo "$0: subset_data_dir() error: $src_dir/segments" && exit 1) || exit 1;
   awk '{print $2}' $dest_dir/segments | sort | uniq > $dest_dir/reco

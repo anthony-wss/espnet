@@ -48,7 +48,8 @@ def meta_analysis(raw_audio_dir, output_dir):
 
     if audio_file_list is not None:
         aid = 0
-        with open(f"{output_dir}/text", "w") as utt2text, open(
+        # open(f"{output_dir}/text", "w") as utt2text
+        with open(
             f"{output_dir}/segments", "w"
         ) as segments, open(f"{output_dir}/utt2dur", "w") as utt2dur, open(
             f"{output_dir}/wav.scp", "w"
@@ -111,7 +112,7 @@ def meta_analysis(raw_audio_dir, output_dir):
                             )
                             continue
                         else:
-                            utt2text.write(f"{sid}\t{text}\n")
+                            # utt2text.write(f"{sid}\t{text}\n")
                             segments.write(
                                 f"{sid}\t{aid}\t{start_time}\t{end_time}\n"
                             )

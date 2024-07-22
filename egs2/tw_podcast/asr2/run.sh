@@ -5,7 +5,7 @@ set -e
 set -u
 set -o pipefail
 
-kmeans_feature="hubert_custom/21"  # use model_type/layer_index
+kmeans_feature="hf_hubert_custom/21"  # use model_type/layer_index
 nclusters=2000
 
 src_lang=$(echo "${kmeans_feature}_km${nclusters}" | tr "/" "_")
@@ -13,9 +13,9 @@ tgt_lang=ch
 
 set=L    # S for the small set, M for the mediate set, L for the large set
 
-train_set=train_"$(echo "${set}" | tr "[:upper:]" "[:lower:]")"
+train_set=train
 valid_set=dev
-test_sets="dev test_meeting test_net"
+test_sets="dev test"
 
 asr_config=conf/train_discrete_asr_e_branchformer1.yaml
 inference_config=conf/decode_ctc0.3.yaml
@@ -29,9 +29,10 @@ src_case="rm"
 tgt_case="ts"
 
 ./asr2.sh \
-    --stop_stage 2 \
-    --skip_stages 8,9,10,11 \
-    --kmeans_opts "--batch_bins 4800000 --portion 0.01 --storage_save_mode true" \
+    --stage 5 \
+    --stop_stage 5 \
+    --skip_stages "8 9 10 11" \
+    --kmeans_opts "--batch_bins 4800000 --portion 0.1 --storage_save_mode true" \
     --kmeans_feature "${kmeans_feature}" \
     --nclusters "${nclusters}" \
     --ngpu 1 \
@@ -53,4 +54,5 @@ tgt_case="ts"
     --tgt_bpe_train_text "data/${train_set}/text.${tgt_case}.${tgt_lang}" \
     --lm_train_text "data/${train_set}/text.${tgt_case}.${tgt_lang}" \
     --num_splits_asr 8 \
-    --nj 2
+    --nj 2 \
+    --hf_ckpt "TencentGameMate/chinese-hubert-base"

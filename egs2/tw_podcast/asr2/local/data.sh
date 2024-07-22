@@ -53,12 +53,12 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
         ${abs_data_dir}
 
     # prepare utt2spk and spk2utt files
-    # for x in ${train_set} ${dev_set} ${test_sets}; do
-    #     dir=${data_dir}/${x}
-    #     paste -d " " <(cut -f 1 ${dir}/segments) <(cut -f 1 ${dir}/segments) | \
-    #         sort -u > ${dir}/utt2spk
-    #     utils/utt2spk_to_spk2utt.pl ${dir}/utt2spk > ${dir}/spk2utt
-    # done
+    for x in ${train_set} ${dev_set} ${test_sets}; do
+        dir=${data_dir}/${x}
+        paste -d " " <(cut -f 1 ${dir}/segments) <(cut -f 1 ${dir}/segments) | \
+            sort -u > ${dir}/utt2spk
+        utils/utt2spk_to_spk2utt.pl ${dir}/utt2spk > ${dir}/spk2utt
+    done
 fi
 
 if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
