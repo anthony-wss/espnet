@@ -754,7 +754,7 @@ if [ ${stage} -le 5 ] && [ ${stop_stage} -ge 5 ] && ! [[ " ${skip_stages} " =~ [
     fi
 
     scripts/feats/perform_kmeans.sh \
-        --stage 1 --stop-stage 4 \
+        --stage 1 --stop-stage 3 \
         --train_set "${train_set}" \
         --dev_set "${_dev_set}" \
         --other_sets "${test_sets} ${train_sp_sets}" \
@@ -824,22 +824,22 @@ if [ ${stage} -le 5 ] && [ ${stop_stage} -ge 5 ] && ! [[ " ${skip_stages} " =~ [
         echo "Unrecognized src_case ${src_case}" && exit 1;
     fi
 
-    for dset in "${train_set}" ${train_sp_sets} "${_dev_set}" ${test_sets}; do
-        cp ${data_extract}/${kmeans_feature_type}/${_suf}${dset}/text \
-            ${data_extract}/${kmeans_feature_type}/${_suf}${dset}/text.${tgt_case}.${tgt_lang}
-    done
+    # for dset in "${train_set}" ${train_sp_sets} "${_dev_set}" ${test_sets}; do
+    #     cp ${data_extract}/${kmeans_feature_type}/${_suf}${dset}/text \
+    #         ${data_extract}/${kmeans_feature_type}/${_suf}${dset}/text.${tgt_case}.${tgt_lang}
+    # done
 
-    if ${eval_valid_set}; then
-        utils/copy_data_dir.sh --validate_opts --non-print ${data_audio}/org/${valid_set} \
-            ${data_extract}/${kmeans_feature_type}/${_suf}/${valid_set}
-        cp ${data_extract}/${kmeans_feature_type}/${_suf}org/${valid_set}/text.${src_case}.${src_lang} \
-            ${data_extract}/${kmeans_feature_type}/${_suf}/${valid_set}
-        cp ${data_extract}/${kmeans_feature_type}/${_suf}org/${valid_set}/text.${tgt_case}.${tgt_lang} \
-            ${data_extract}/${kmeans_feature_type}/${_suf}/${valid_set}
+    # if ${eval_valid_set}; then
+    #     utils/copy_data_dir.sh --validate_opts --non-print ${data_audio}/org/${valid_set} \
+    #         ${data_extract}/${kmeans_feature_type}/${_suf}/${valid_set}
+    #     cp ${data_extract}/${kmeans_feature_type}/${_suf}org/${valid_set}/text.${src_case}.${src_lang} \
+    #         ${data_extract}/${kmeans_feature_type}/${_suf}/${valid_set}
+    #     cp ${data_extract}/${kmeans_feature_type}/${_suf}org/${valid_set}/text.${tgt_case}.${tgt_lang} \
+    #         ${data_extract}/${kmeans_feature_type}/${_suf}/${valid_set}
 
-        utils/fix_data_dir.sh --utt_extra_files "text.${src_case}.${src_lang} text.${tgt_case}.${tgt_lang}" \
-            "${data_extract}/${kmeans_feature_type}/${_suf}/${dset}"
-    fi
+    #     utils/fix_data_dir.sh --utt_extra_files "text.${src_case}.${src_lang} text.${tgt_case}.${tgt_lang}" \
+    #         "${data_extract}/${kmeans_feature_type}/${_suf}/${dset}"
+    # fi
 
     if [ -n "${speed_perturb_factors}" ]; then
         _dirs="${data_extract}/${kmeans_feature_type}/${_suf}${dset}/${train_set} "
