@@ -31,7 +31,7 @@ if [ ! -e "${TW_PODCAST}" ]; then
     exit 1
 fi
 
-if [ ! -d "${TW_PODCAST}/audio" ] ; then
+if [ ! -d "${TW_PODCAST}" ] ; then
     echo "TW_PODCAST data not found in ${TW_PODCAST}."
     # echo "Please follow the instruction in https://wenet-e2e.github.io/WenetSpeech/"
     # echo "and re-construct the data."

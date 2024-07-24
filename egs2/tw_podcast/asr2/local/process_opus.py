@@ -20,6 +20,7 @@ import os
 import sys
 
 from pydub import AudioSegment
+from pydub.exceptions import CouldntDecodeError
 
 
 def read_file(wav_scp, segments):
@@ -60,7 +61,11 @@ def output(output_wav_scp, utt_list, seg_path_list, start_time_list, end_time_li
 
             os.makedirs(output_dir, exist_ok=True)
             if current_wav_path != previous_wav_path:
-                source_wav = AudioSegment.from_file(current_wav_path)
+                try:
+                    source_wav = AudioSegment.from_file(current_wav_path)
+                except CouldntDecodeError:
+                    print(f"Error: Unable to process file {current_wav_path} because it is larger than 4GB.")
+                    continue
                 source_wav = source_wav.set_channels(1)
             previous_wav_path = current_wav_path
 

@@ -99,7 +99,7 @@ if [ $stage -le 1 ]; then
   # Sanity check.
   # [ ! -f $wenetspeech_dir/WenetSpeech.json ] &&\
   #   echo "$0: Please download $wenetspeech_dir/WenetSpeech.json!" && exit 1;
-  [ ! -d $tw_podcast_dir/audio ] &&\
+  [ ! -d $tw_podcast_dir ] &&\
     echo "$0: Please download $tw_podcast_dir/audio!" && exit 1;
 
   [ ! -d $corpus_dir ] && mkdir -p $corpus_dir
@@ -107,7 +107,7 @@ if [ $stage -le 1 ]; then
   # Files to be created:
   # wav.scp text segments utt2dur
   python3 local/extract_meta.py \
-    $tw_podcast_dir/audio $corpus_dir || exit 1;
+    $tw_podcast_dir $corpus_dir || exit 1;
 fi
 
 if [ $stage -le 2 ]; then

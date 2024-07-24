@@ -38,12 +38,17 @@ def meta_analysis(raw_audio_dir, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    audio_file_list = [os.path.join(raw_audio_dir, audio_file)  for audio_file in os.listdir(raw_audio_dir)]
+    audio_file_list = []
+    for channel in os.listdir(raw_audio_dir):
+        for audio_file in os.listdir(os.path.join(raw_audio_dir, channel)):
+            if audio_file.endswith('.m4a'):
+                audio_file_list.append(os.path.join(raw_audio_dir, channel, audio_file))
+    # audio_file_list = [os.path.join(raw_audio_dir, audio_file)  for audio_file in os.listdir(raw_audio_dir)]
     assert len(audio_file_list) >= 10, f"{raw_audio_dir} should have at least 10 samples"
     
     # TODO: Check if the files are all audio file (given the suffix)
-    train_end_idx = int(len(audio_file_list) * 0.8)
-    dev_end_idx = int(len(audio_file_list) * 0.9)
+    train_end_idx = int(len(audio_file_list) * 0.98)
+    dev_end_idx = int(len(audio_file_list) * 0.99)
     test_end_idx = len(audio_file_list) - 1
 
     if audio_file_list is not None:
